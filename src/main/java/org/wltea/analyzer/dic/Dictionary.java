@@ -35,7 +35,7 @@ import java.util.List;
 import org.wltea.analyzer.cfg.Configuration;
 
 /**
- * 词典管理类,单子模式
+ * 词典管理类,singleton模式
  */
 public class Dictionary {
 
@@ -43,10 +43,10 @@ public class Dictionary {
 	/*
 	 * 词典单子实例
 	 */
-	private static Dictionary singleton;
+	private static volatile Dictionary singleton;
 	
 	/*
-	 * 主词典对象
+	 * 主词典对象（词根对象）
 	 */
 	private DictSegment _MainDict;
 	
@@ -63,7 +63,10 @@ public class Dictionary {
 	 * 配置对象
 	 */
 	private Configuration cfg;
-	
+	/**
+	 * 构造方法，采用饥汉构造方法
+	 * @param cfg
+	 */
 	private Dictionary(Configuration cfg){
 		this.cfg = cfg;
 		this.loadMainDict();

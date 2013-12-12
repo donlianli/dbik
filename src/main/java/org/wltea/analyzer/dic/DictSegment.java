@@ -35,7 +35,8 @@ import java.util.Map;
 class DictSegment implements Comparable<DictSegment>{
 	
 	//公用字典表，存储汉字
-	private static final Map<Character , Character> charMap = new HashMap<Character , Character>(16 , 0.95f);
+	private static final Map<Character , Character> charMap = 
+			new HashMap<Character , Character>(16 , 0.95f);
 	//数组大小上限
 	private static final int ARRAY_LENGTH_LIMIT = 3;
 
@@ -180,9 +181,9 @@ class DictSegment implements Comparable<DictSegment>{
 	
 	/**
 	 * 加载填充词典片段
-	 * @param charArray
-	 * @param begin
-	 * @param length
+	 * @param charArray 字符数组
+	 * @param begin 
+	 * @param length 
 	 * @param enabled
 	 */
 	private synchronized void fillSegment(char[] charArray , int begin , int length , int enabled){
