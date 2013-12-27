@@ -15,25 +15,35 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 public class IKAnalyzierTest extends TestCase {
 	public void testToken() throws Exception {
 		Analyzer analyzer = new IKAnalyzer(); 
+//		TokenStream ts = analyzer.tokenStream("myfield", new StringReader(
+//				"美的（Midea） W13PCS503E 易拆洗一手开系列 5L电压力锅"));
 		TokenStream ts = analyzer.tokenStream("myfield", new StringReader(
-				"【3店通用】仅99元，享价值337元『东来顺』双人套餐！中华老字号，传统老北京涮肉！"));
+				"中华人民共和国"));
 		OffsetAttribute offsetAtt = ts.addAttribute(OffsetAttribute.class);
 		CharTermAttribute termAtt = ts.addAttribute(CharTermAttribute.class);
 		PositionIncrementAttribute posIncrAtt = ts.addAttribute(PositionIncrementAttribute.class); 
 		TypeAttribute typeAtt = ts.addAttribute(TypeAttribute.class);
 		try {
 			ts.reset(); // Resets this stream to the beginning. (Required)
+			int pos=0;
 			while (ts.incrementToken()) {
 				// Use AttributeSource.reflectAsString(boolean)
 				// for token stream debugging.
 //				System.out.println("token: " + ts.reflectAsString(true));
-				System.out.println("term:[" +termAtt.toString()+"]");
-				System.out.println("termType:[" +typeAtt.type()+"]");
-				System.out.println("positionIncrement:" +posIncrAtt.getPositionIncrement());
-				System.out.println("token start offset: "
-						+ offsetAtt.startOffset());
-				System.out.println("  token end offset: "
-						+ offsetAtt.endOffset());
+				StringBuilder sb = new StringBuilder();
+				sb.append("term:\"" +termAtt.toString()+"\"").append(",\n");
+				sb.append("termType:\"" +typeAtt.type()+"\"").append(",\n");
+				int increment = posIncrAtt.getPositionIncrement();
+				if(increment>0){
+					pos = pos+increment;
+				}
+				sb.append("positionIncrement:" +increment).append(",\n");
+				sb.append("position:" +pos).append(",\n");
+				sb.append("StartOffset: "
+						+ offsetAtt.startOffset()).append(",\n");
+				sb.append("EndOffset: "
+						+ offsetAtt.endOffset()).append("");
+				System.out.println(sb.toString());
 			}
 			ts.end(); // Perform end-of-stream operations, e.g. set the final
 						// offset.
