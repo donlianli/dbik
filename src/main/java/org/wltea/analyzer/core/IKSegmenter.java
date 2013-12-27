@@ -44,7 +44,7 @@ public final class IKSegmenter {
 	private Configuration cfg;
 	//分词器上下文
 	private AnalyzeContext context;
-	//分词处理器列表
+	//分词处理器列表，有中文数字，字母和CJK分词器3种
 	private List<ISegmenter> segmenters;
 	//分词歧义裁决器
 	private IKArbitrator arbitrator;

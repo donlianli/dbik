@@ -37,7 +37,7 @@ import org.wltea.analyzer.dic.Dictionary;
 
 /**
  * 
- * 分词器上下文状态
+ * IK分词器上下文
  * 
  */
 class AnalyzeContext {
@@ -113,6 +113,8 @@ class AnalyzeContext {
 	
     /**
      * 根据context的上下文情况，填充segmentBuff 
+     * 
+     * 将待索引字符放入segmentBuff缓冲区
      * @param reader
      * @return 返回待分析的（有效的）字串长度
      * @throws IOException 
@@ -141,6 +143,10 @@ class AnalyzeContext {
 
     /**
      * 初始化buff指针，处理第一个字符
+     * <ul>
+     * 	<li>1、将第一个字符小写化，全角转半角</li>
+     *  <li>2、根据第一个字符设置charTypes的类型</li>
+     * </ul>
      */
     void initCursor(){
     	this.cursor = 0;
@@ -191,9 +197,10 @@ class AnalyzeContext {
 	}
 
 	/**
-	 * 判断当前segmentBuff是否已经用完
+	 * 当前segmentBuff是否已经用完（指针cursor是否已经指到缓冲区最后一个字符）
 	 * 当前执针cursor移至segmentBuff末端this.available - 1
-	 * @return
+	 * @return true 已经到最后<br/>
+	 * false 还没有到最后
 	 */
 	boolean isBufferConsumed(){
 		return this.cursor == this.available - 1;
@@ -202,7 +209,7 @@ class AnalyzeContext {
 	/**
 	 * 判断segmentBuff是否需要读取新数据
 	 * 
-	 * 满足一下条件时，
+	 * 满足以下条件时，
 	 * 1.available == BUFF_SIZE 表示buffer满载
 	 * 2.buffIndex < available - 1 && buffIndex > available - BUFF_EXHAUST_CRITICAL表示当前指针处于临界区内
 	 * 3.!context.isBufferLocked()表示没有segmenter在占用buffer

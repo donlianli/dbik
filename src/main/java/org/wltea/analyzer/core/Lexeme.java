@@ -26,6 +26,7 @@ package org.wltea.analyzer.core;
 
 /**
  * IK词元对象 
+ * 记录token词根，偏移量，增量和类型的实体
  */
 public class Lexeme implements Comparable<Lexeme>{
 	//lexemeType常量
@@ -273,7 +274,7 @@ public class Lexeme implements Comparable<Lexeme>{
 	 * 
 	 */
 	public String toString(){
-		StringBuffer strbuf = new StringBuffer();
+		StringBuilder strbuf = new StringBuilder();
 		strbuf.append(this.getBeginPosition()).append("-").append(this.getEndPosition());
 		strbuf.append(" : ").append(this.lexemeText).append(" : \t");
 		strbuf.append(this.getLexemeTypeString());
