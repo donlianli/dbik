@@ -38,7 +38,7 @@ import org.wltea.analyzer.dic.Dictionary;
  */
 public final class IKSegmenter {
 	
-	//字符窜reader
+	//字符串reader
 	private Reader input;
 	//分词器配置项
 	private Configuration cfg;
@@ -126,7 +126,7 @@ public final class IKSegmenter {
 				return null;
 				
 			}else{
-				//初始化指针
+				//初始化指针，并处理第一个字符的类型
 				context.initCursor();
 				do{
         			//遍历子分词器

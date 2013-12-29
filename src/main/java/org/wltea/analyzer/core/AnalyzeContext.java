@@ -42,7 +42,7 @@ import org.wltea.analyzer.dic.Dictionary;
  */
 class AnalyzeContext {
 	
-	//默认缓冲区大小
+	//默认缓冲区大小，4K*2B
 	private static final int BUFF_SIZE = 4096;
 	//缓冲区耗尽的临界值
 	private static final int BUFF_EXHAUST_CRITICAL = 100;	
@@ -122,7 +122,7 @@ class AnalyzeContext {
     int fillBuffer(Reader reader) throws IOException{
     	int readCount = 0;
     	if(this.buffOffset == 0){
-    		//首次读取reader
+    		//首次读取reader,readCount为读入的字符数量
     		readCount = reader.read(segmentBuff);
     	}else{
     		int offset = this.available - this.cursor;
@@ -208,12 +208,13 @@ class AnalyzeContext {
 	
 	/**
 	 * 判断segmentBuff是否需要读取新数据
-	 * 
-	 * 满足以下条件时，
-	 * 1.available == BUFF_SIZE 表示buffer满载
-	 * 2.buffIndex < available - 1 && buffIndex > available - BUFF_EXHAUST_CRITICAL表示当前指针处于临界区内
-	 * 3.!context.isBufferLocked()表示没有segmenter在占用buffer
+	 * <p>
+	 * 满足以下全部条件时，<br/>
+	 * 1.available == BUFF_SIZE 表示buffer满载<br/>
+	 * 2.buffIndex < available - 1 && buffIndex > available - BUFF_EXHAUST_CRITICAL表示当前指针处于临界区内<br/>
+	 * 3.!context.isBufferLocked()表示没有segmenter在占用buffer<br />
 	 * 要中断当前循环（buffer要进行移位，并再读取数据的操作）
+	 * </p>
 	 * @return
 	 */
 	boolean needRefillBuffer(){
